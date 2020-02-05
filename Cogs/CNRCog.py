@@ -10,9 +10,15 @@ class CNRCog(commands.Cog):
         print("CNR cog loaded!")
 
     @commands.command()
-    async def vore(self, ctx, user: discord.Member):
+    async def findID(self, ctx, user: discord.Member):
         """Vores a given user."""
-        await ctx.send("Sorry {}, but you just got vored".format(user.name))
+        print(user.id)
+
+    @commands.command()
+    async def emojiAdd(self, ctx):
+        """Adds an emoji to a message."""
+        msg = await ctx.send("test")
+        await msg.add_reaction("\U0001F346")
 
 def setup(bot):
     bot.add_cog(CNRCog(bot))
