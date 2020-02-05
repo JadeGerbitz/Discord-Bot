@@ -1,0 +1,63 @@
+import sqlite3
+
+connection = sqlite3.connect("SQL\Discord.db")
+
+cursor = connection.cursor()
+
+def create_user_table():
+    try:
+        cursor.execute("""CREATE TABLE users (
+        user_ID INTEGER PRIMARY KEY,
+        username VARCHAR(32),
+        level INTEGER);""")
+        print("Table created!")
+    except:
+        print("Table already exists!")
+
+def add_user(ID, username):
+    try:
+        cursor.execute("IF NOT EXISTS (SELECT * FROM users WHERE user_ID = " + ID + ") INSERT INTO users VALUES (?, ?, ?)", (ID, username, 0))
+    except:
+        print("User already exists!")
+def delete_by_ID(ID):
+    try:
+        cursor.execute("DELETE FROM users WHERE user_ID = " + ID)
+    except:
+        print("Deletion failed.")
+
+def delete_by_username(username):
+    try:
+        cursor.execute("DELETE FROM users WHERE username = " + username)
+    except:
+        print("Deletion failed.")
+
+def update_username(ID, new_username):
+    try:
+        cursor.execute("UPDATE users SET username = " + new_username + " WHERE user_ID = " + ID)
+    except:
+        print("Update failed.")
+
+def update_level(ID, new_level):
+    try:
+        cursor.execute("UPDATE users SET level = " + new_level + " WHERE user_ID = " + ID)
+    except:
+        print("Update failed.")
+
+def level_up(ID):
+    try:
+        cursor.execute("UPDATE users SET level = level + 1 WHERE user_ID = " + ID)
+    except:
+        print("Update failed.")
+
+def read_all():
+    try:
+        cursor.execute("SELECT * FROM users")
+        userlist = cursor.fetchall()
+        for i in userlist:
+            print(i)
+    except:
+        print("Table does not exist!")
+
+connection.commit()
+
+connection.close()
